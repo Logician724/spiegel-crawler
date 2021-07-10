@@ -24,9 +24,13 @@ class SpiegelCrawler(scrapy.Spider):
             yield curr_article
         next_page = re.search(
             "'(.*)'", response.xpath('//div[@data-area="pagination-bar"]').xpath('.//span[@title="Ältere Artikel"]/@onclick').get()).group().replace("'","")
+        
         if next_page is not None:
-            logging.debug(next_page)
-            yield response.follow(next_page, self.parse)
+            # The last page in spiegel international moves to a
+            # different view. Crawler should stop there.
+            if next_page.find('nachrichtenarchiv') == -1:
+                logging.debug(next_page)
+                yield response.follow(next_page, self.parse)
 
     @staticmethod
     def gen_id(article_selector):
