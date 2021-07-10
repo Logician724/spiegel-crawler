@@ -13,8 +13,3 @@ class ArticleItem(Item):
     subtitle = Field()
     abstract = Field()
     downloaded_at = Field()
-    def format(self):
-        self['id'] =  self.get('id').strip().strip('"')
-        self['title'] = self.get('title').strip().strip('"')
-        self['subtitle'] = self.get('subtitle').strip().strip('"')
-        self['abstract'] = self.get('abstract').strip().strip('"')
