@@ -14,10 +14,9 @@ class ArticleValidationPipeline:
             raise DropItem('invalid id: ' + str(adapter.get('id')))
         if not (isinstance(adapter.get('title'), str) and len(adapter.get('title').strip()) > 0):
             raise DropItem('invalid title: ' + str(adapter.get('title')))
-        if not (isinstance(adapter.get('subtitle'), str) and len(adapter.get('subtitle').strip()) > 0):
-            raise DropItem('invalid subtitle: ' + str(adapter.get('subtitle')))
-        if not (isinstance(adapter.get('abstract'), str) and len(adapter.get('abstract').strip()) > 0):
-            raise DropItem('invalid abstract: ' + str(adapter.get('abstract')))
+        # Some articles don't have an abstract or a subtitle, hence
+        # aggressively validating for having these attributes should
+        # not be necessary
         return item
 
 class ArticleFormatPipeline:
@@ -25,6 +24,8 @@ class ArticleFormatPipeline:
         adapter = ItemAdapter(item)
         adapter['id'] =  adapter.get('id').strip().strip('"')
         adapter['title'] = adapter.get('title').strip().strip('"')
-        adapter['subtitle'] = adapter.get('subtitle').strip().strip('"')
-        adapter['abstract'] = adapter.get('abstract').strip().strip('"')
+        if isinstance(adapter['subtitle'], str):
+            adapter['subtitle'] = adapter.get('subtitle').strip().strip('"')
+        if isinstance(adapter['abstract'], str):
+            adapter['abstract'] = adapter.get('abstract').strip().strip('"')
         return adapter.item
