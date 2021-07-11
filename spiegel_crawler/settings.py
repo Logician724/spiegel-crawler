@@ -8,6 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import os
 
 BOT_NAME = 'spiegel_crawler'
 
@@ -66,7 +67,8 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'spiegel_crawler.pipelines.ArticleValidationPipeline': 300,
-    'spiegel_crawler.pipelines.ArticleFormatPipeline': 400
+    'spiegel_crawler.pipelines.ArticleFormatPipeline': 400,
+    'spiegel_crawler.pipelines.ArticleMongoDBPipeline': 500
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -89,5 +91,9 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-FEED_FORMAT = 'json'
-FEED_URI = 'items.json'
+
+LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
+
+MONGO_URI = os.getenv('MONGO_URI')
+MONGO_DB = os.getenv('MONGO_DB', 'crawler')
+MONGO_COL = os.getenv('MONGO_COL', 'crawler')
