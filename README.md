@@ -1,5 +1,5 @@
 # Spiegel Crawler
-A python `scrapy` based crawler that is scrapes through the [international section of spiegel](https://www.spiegel.de/international/) and drops the result in a `mongodb` database.
+A python `scrapy` based crawler that scrapes through the [international section of spiegel](https://www.spiegel.de/international/) and drops the result in a `mongodb` database.
 
 ## Requirements
 - [Install `docker`](https://docs.docker.com/engine/install/)
@@ -19,11 +19,11 @@ cd spiegel-crawler
 ```
 docker-compose up --build -d  
 ```
-- to continuously read the logs, type into your terminal [Optional]
+- to continuously read the logs, type into your terminal in your repository directory[Optional]
 ```
 docker-compose logs -f
 ```
-- to stop the crawler, type into your terminal
+- to stop the crawler, type into your terminal in your repository directory
 ```
 docker-compose down
 ```
@@ -46,7 +46,7 @@ There are 2 containers in the system
 - `spiegel_crawler` container: Run the [cron](https://wiki.debian.org/cron) process that schedules the crawler script to run
 
     - Once on script initialization for the purpose of testing.
-    - Once every 15 minutes. speficially on the 0th, 15th, and 45th minute of each hour.
+    - Once every 15 minutes. speficially on the 0th, 15th, 30th, and 45th minute of each hour.
 - `mongo` container: Runs the mongodb database engine and listens for connections on port `27017` 
 
 ## Crawl Result Set
@@ -88,7 +88,7 @@ The instructions above assume the default configuration in `env.default` has not
 
 ## Customization
 
-The repository uses an `env.default` that houses the default configuration for the respository for quick startup. The following variables are customizable
+The repository uses an `env.default` file that houses the default configuration for the respository for quick startup. The following variables can be changed or added in `.env.default` file to make them customizable
 
 - `MONGO_URI` : used by the crawler to connect to the correct database. The database connection string format follows the [standard mongodb format](https://docs.mongodb.com/manual/reference/connection-string/).
 
